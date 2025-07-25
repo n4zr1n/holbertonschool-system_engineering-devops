@@ -1,0 +1,35 @@
+https://imgur.com/a/95KFmq1
+
+1. HAProxy Load Balancer (Clustered)
+Purpose: Distributes incoming traffic between multiple backend servers, increases availability and redundancy.
+
+Why? Avoids single point of failure (SPOF). If one load balancer fails, the other continues routing traffic.
+
+Setup: Two HAProxy instances in Active-Passive mode using Keepalived or VRRP (Virtual Router Redundancy Protocol).
+
+2. Web Server (NGINX)
+Purpose:
+Handles HTTP/HTTPS requests;
+Serves static content (HTML, CSS, JS, images);
+Forwards dynamic requests to the application server.
+
+Why separate? Allows for better scalability, security, and maintenance. You can cache static assets or use a CDN.
+
+3. Application Server
+Purpose:
+Runs the backend code (e.g., Python, PHP, Node.js); 
+Processes dynamic requests (user logins, API calls, form submissions);
+Interfaces with the database.
+
+Why separate?
+You can scale application logic independently from web serving.
+Decouples the frontend (web) from backend (logic).
+
+4. Database Server (MySQL)
+Purpose:
+Stores persistent data (users, orders, posts, etc.);
+Processes structured queries (SQL)
+
+Why separate?
+Protects sensitive data behind internal firewalls;
+Improves performance by isolating I/O-heavy operations.

@@ -1,0 +1,45 @@
+https://imgur.com/a/gUp0d69
+
+1. What is a server?
+A server is a computer system that provides services to other computers (clients) over a network. In this case, it hosts the website files, processes application logic, and manages the database.
+
+2. What is the role of the domain name?
+The domain name (foobar.com) is a human-friendly address that maps to the IP address of the server (8.8.8.8). It allows users to reach your website without remembering IP addresses.
+
+3. What type of DNS record is www in www.foobar.com?
+The www is a subdomain. The DNS record is usually an A record that maps www.foobar.com to the server's IP address: 8.8.8.8.
+
+4. What is the role of the web server (Nginx)?
+Nginx handles:
+Receiving HTTP/HTTPS requests from users
+Serving static files (HTML, CSS, JS, images)
+Reverse proxying dynamic requests to the application server
+Load balancing
+SSL termination
+
+5. What is the role of the application server?
+The application server runs the core backend logic of the site:
+Processes user input
+Performs business logic
+Interacts with the database
+Renders dynamic content
+
+6. What is the role of the database?
+The MySQL database stores all persistent data for the website:
+User accounts
+Posts, comments, products, etc.
+Logs, metrics, and analytics
+It supports structured querying using SQL.
+
+7. What is the server using to communicate with the user's computer?
+The server communicates with the user via the HTTP/HTTPS protocol over the TCP/IP network stack.
+
+Issues with This Infrastructure
+1. Single Point of Failure (SPOF)
+If the only server goes down, the entire website becomes unreachable.
+
+2. Downtime During Maintenance
+Updating the application code or restarting Nginx or MySQL may cause temporary downtime.
+
+3. Cannot Scale with Traffic
+One server limits how many users can access the website simultaneously. High traffic can overload CPU, RAM, or disk I/O.

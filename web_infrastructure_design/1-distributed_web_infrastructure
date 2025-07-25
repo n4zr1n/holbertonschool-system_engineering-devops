@@ -1,0 +1,41 @@
+https://imgur.com/a/QkZ4RbS
+
+Load Balancer (HAProxy)
+Why added? To distribute incoming traffic evenly between servers, ensuring better performance, fault tolerance, and horizontal scalability.
+
+Web Server (Nginx) handles static content and forwards dynamic requests to the application server.
+
+Application Server runs the application logic and communicates with the database.
+
+Distribution algorithm:
+Round Robin requests are distributed to backend servers one after another in a circular order.
+
+Active-Active
+Our setup is Active-Active because both servers are actively serving traffic from the load balancer. HAProxy distributes requests to both. Application servers in both nodes are live.
+
+Active-Passive
+Only one server handles trafficw while the other stays idle and only takes over if the active node fails. It is used mostly for redundancy, not load distribution.
+
+Database: Primary-Replica Cluster
+Primary Node handles all data writes and replicates changes to the replica.
+
+Replica Node receives updates from primary, handles read-only queries, cannot process writes directly, reduces load on primary and improves read performance.
+
+Issues with This Infrastructure
+SPOF (Single Points of Failure)
+HAProxy is a SPOF. If it goes down, no user traffic reaches backend servers.
+Solution: Use two load balancers in an Active-Passive or clustered mode.
+
+Primary DB node is a SPOF for writes. If it fails, writes stop.
+Solution: Add automated failover and promote the replica.
+
+Security Issues
+No firewall: All ports/services might be open to the public.
+Solution: Configure firewalls to restrict access.
+
+No HTTPS: All traffic is unencrypted.
+Solution: Install TLS certificates to secure communication.
+
+No Monitoring
+No visibility into server health, traffic load, or failures.
+Solution: Integrate monitoring tools for  CPU/RAM usage, disk space, service status, and response times

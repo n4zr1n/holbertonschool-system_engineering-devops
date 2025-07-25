@@ -1,0 +1,65 @@
+https://imgur.com/a/rJJf50z
+
+1. Firewalls
+Firewall 1: In front of Load Balancer - filters incoming traffic.
+
+Firewall 2 and 3: In front of each backend server - allow only internal traffic from the load balancer and monitoring system.
+
+Why? To prevent unauthorized access, reduce attack surface, and isolate zones.
+
+2. SSL Certificate (on Load Balancer)
+Installed on HAProxy to serve www.foobar.com over HTTPS.
+Why HTTPS?
+Encrypts data between client and server, builds user trust, SEO benefits & compliance
+
+3. Monitoring Clients
+Installed on: Load Balancer, servers
+Agents collect logs and metrics: CPU, RAM, disk, requests, errors, etc.
+Why? Enables real-time visibility, performance tracking, alerting, and troubleshooting.
+
+What are Firewalls for?
+Control inbound/outbound traffic;
+Enforce security policies;
+Prevent unauthorized access to services like MySQL.
+
+Why Serve Traffic Over HTTPS?
+Encrypts communication between users and the server;
+Protects data in transit;
+Prevents MITM attacks;
+Ensures data integrity and authentication.
+
+What is Monitoring Used For?
+Observability: Know what's happening inside servers;
+Alerting: Know immediately if something breaks or slows down;
+Historical data: Analyze usage trends or performance bottlenecks.
+
+How Does Monitoring Tool Collect Data?
+Agent-based: Small daemon runs on the server, collecting metrics/logs;
+Push or pull: Either the server pushes data to the platform, or the platform scrapes it.
+
+How to Monitor Web Server QPS?
+Configure NGINX to expose QPS metrics using ngx_http_stub_status_module or a custom status endpoint;
+Use Prometheus + Node Exporter or nginx-exporter to scrape and store metrics;
+Create a Grafana dashboard to visualize QPS trends and set alerts.
+
+Issues with This Infrastructure
+1. SSL Termination at the Load Balancer
+Problem: If SSL is decrypted at LB, traffic between LB and backend is unencrypted.
+Risk: Sensitive data could be exposed if internal network is compromised.
+Solution: Use end-to-end encryption: re-encrypt traffic from LB to backend using self-signed/internal certs.
+
+2. Only One MySQL Server Accepting Writes
+Problem: If the primary goes down, no write operations are possible.
+Risk: Data unavailability or loss of service.
+Solution: Use MySQL failover tools
+
+3. Servers Have All Components
+Problem: Tight coupling makes scaling, maintenance, and security harder.
+Examples:
+Hard to scale app without duplicating DBs;
+DB usage spikes could affect web/app performance;
+Updating one component risks breaking others.
+Solution:
+Separate components into tiers (web, app, DB);
+Use containers (Docker) or microservices architecture;
+Dedicated DB nodes for better performance & control.
